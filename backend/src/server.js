@@ -9,9 +9,10 @@ import { app, server } from "./lib/socket.js";
 import authRouter from "./routes/auth.route.js";
 import messageRouter from "./routes/message.route.js";
 
-dotenv.config({ path: "./.env" }); // even though the .env file is located in the root. the config is able to identify from src
+dotenv.config(); // even though the .env file is located in the root. the config is able to identify from src
 
 // const app = express();
+const __dirname = path.resolve();
 
 // MIDDLEWARES
 app.use(
@@ -22,7 +23,7 @@ app.use(
 app.use(cookieParser());
 app.use(
   cors({
-    origin: ["http://localhost:5173", "http://localhost:5000"],
+    origin: "http://localhost:5173",
     credentials: true
   })
 );
@@ -34,8 +35,6 @@ app.use("/api/messages", messageRouter);
 app.get("/api/hello", (req, res) => {
   res.send("Hello Chatting Application!");
 });
-
-const __dirname = path.resolve();
 
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "../frontend/dist")));
